@@ -1,0 +1,129 @@
+body {
+    margin: 0;
+    font-family: "Audiowide", Helvetica, sans-serif;
+    color: rgb(102, 102, 236);
+}
+
+
+.heroText{
+    top: 50vh;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    font-weight: 100;
+    text-align: center;
+}
+
+.container1 {
+    display: grid;
+    margin-top: 60rem;
+}
+
+#title {
+    text-align: center;
+    font-size: 3.5rem;
+    margin: auto;
+}
+
+.flexcon {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: white;
+    max-width: 45rem;
+    min-width: 45rem;
+    min-height: 40rem;
+    max-height: 40rem;
+    margin-left: 2rem;
+    margin-top: 5rem;
+    box-shadow: 0.5rem 0.5rem 2rem black;
+    grid-column-start: 1;
+    grid-column-end: 2;
+}
+
+.flexcon .prediction {
+    margin-left: 65%;
+    margin-top: 20%;
+}
+
+.flexcon .prediction h1 {
+    height: 2rem;
+}
+
+.flexcon .prediction h2 {
+    height: 0rem;
+}
+
+.flexcon2 {
+    position: relative;
+    margin-top: 15rem;
+}
+
+.flexcon2 button {
+    border-radius: 0.5rem;
+    width: 10rem;
+    min-height: 4rem;
+    cursor: pointer;
+    margin: 2rem;
+    font-weight: 900;
+    font-family: "Audiowide", Helvetica, sans-serif;
+    background-color: rgb(102, 102, 236);
+    color: white;
+}
+
+#myCanvas {
+    cursor: crosshair;
+    border: solid;
+    background-color: white;
+}
+
+table {
+    margin: 2rem;
+    border-collapse: collapse;
+    width: 24rem;
+    position: absolute;
+    border: solid;
+}
+
+td {
+    white-space: none;
+    cursor: pointer;
+}
+
+.clicked {
+    background: rgb(102, 102, 236);
+}
+
+tr {
+    height: 1rem;
+}
+
+.flexcon3 {
+    flex-wrap: wrap;
+    background-color: white;
+    max-width: 69rem;
+    min-width: 69rem;
+    min-height: 50rem;
+    max-height: 50rem;
+    margin-left: 2rem;
+    box-shadow: 0.5rem 0.5rem 2rem black;
+    grid-column-start: 2;
+    grid-column-end: 3;
+}
+
+.flexcon3 .modelData {
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
+    border: 1px solid;
+}
+
+.flexcon3 .modelData>div {
+    display: inline;
+    text-align: center;
+    border: 1px solid;
+}
+
+.NNModel{
+    border: solid;
+    height: 74%;
+    background-color: black;
+}

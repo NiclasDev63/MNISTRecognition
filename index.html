@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link id="modelJson" href="/MNISTClassifier/model.json" rel="import">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Audiowide">
+</head>
+
+<body id="body">
+    <h1 id="title">Neural Network From Scratch</h1>
+    <div class="heroText">
+        <h1>THE FUTURE OF AI
+            <br>
+            IS NOW
+        </h1>
+    </div>
+    <div class="container1">
+        <div class="flexcon">
+            <div class="prediction">
+                <h1>PREDICTION &nbsp</h1>
+                <h2 id="predNumber">Draw a Number between 0-9</h2>
+            </div>
+            <table id="board">
+                <tbody>
+                </tbody>
+            </table>
+            <div class="flexcon2">
+                <button id="rstButton">RESET</button>
+                <button id="predButton">PREDICT</button>
+            </div>
+        </div>
+        <div class="flexcon3">
+            <div class="modelData">
+                <div>
+                    <h3>Epochs trained</h3>
+                    <p>15</p>
+                </div>
+                <div>
+                    <h3>Learning rate</h3>
+                    <p>0.001</p>
+                </div>
+                <div>
+                    <h3>Optimizer</h3>
+                    <p>Adamax</p>
+                </div>
+                <div>
+                    <h3>Loss function</h3>
+                    <p>Categorical crossentropy</p>
+                </div>
+                <div>
+                    <h3>Training Set</h3>
+                    <p>MNIST</p>
+                </div>
+                <div>
+                    <h3>Hidden layers</h3>
+                    <p>1</p>
+                </div>
+                <div>
+                    <h3>Batch size</h3>
+                    <p>128</p>
+                </div>
+                <div>
+                    <h3>Trainable Parameters</h3>
+                    <p>269.322</p>
+                </div>
+            </div>
+            <div class="NNModel"></div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@0.5.21/dist/vanta.net.min.js"></script>
+    <script>
+        VANTA.NET({
+            el: "body",
+            mouseControls: true,
+            touchControls: true,
+            gyroControls: false,
+            minHeight: 200.00,
+            minWidth: 200.00,
+            scale: 1.00,
+            scaleMobile: 1.00,
+            color: 0xd79fc,
+            backgroundColor: 0x0,
+            points: 8.00,
+            maxDistance: 25.00
+        })
+    </script>
+    <script src="/dist/main.js"></script>
+
+</body>
+
+</html>
