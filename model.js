@@ -64,7 +64,7 @@ class Model {
         console.log(loss)
     }
 
-    categoricalDerivat(y_true, y_pred){
+    categoricalDerivate(y_true, y_pred) {
         return math.subtract(y_pred - y_true)
     }
 
