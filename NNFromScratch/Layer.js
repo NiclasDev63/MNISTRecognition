@@ -2,11 +2,6 @@
 
 import * as math from 'mathjs';
 
-import { globalVariables } from "./model.js"
-
-
-
-
 /**
  * @param {integer} inputDim - Dimensionality of the input
  * @param {integer} units - Dimensionality of the output
@@ -20,42 +15,24 @@ export class Layer {
         this.units = units
         this.activation = activation
         this.useBias = useBias
-        if (useBias) {
-            this.initializeBias()
-        }
-        this.initializeWeights()
-        globalVariables.layerCount++
     }
 
-    initializeWeights() {
-        if (globalVariables.layerCount !== 0) {
-            globalVariables.weights[globalVariables.layerCount] =
-                math.random([globalVariables.layers[globalVariables.layerCount - 1].units, this.units], 0, 2)
-        } else {
-            globalVariables.weights[globalVariables.layerCount] =
-                math.random([globalVariables.input.length, this.units], -2, 2)
+    relu(output) {
+        let arr = []
+        for (let x = 0; x < output.length; x++) {
+            arr[x] =
+                math.max(0, output[x])
         }
-        globalVariables.output[globalVariables.layerCount] = math.zeros([this.units])
-    }
-    initializeBias() {
-        globalVariables.bias[globalVariables.layerCount] =
-            math.random([this.units], -1, 1)
+        return arr
     }
 
-
-    relu(layer) {
-        for (let x = 0; x < globalVariables.output[layer].length; x++) {
-            globalVariables.output[layer][x] =
-                math.max(0, globalVariables.output[layer][x])
+    softmax(output) {
+        output = math.divide(output, 1e+4)
+        let arr = []
+        let denominator = math.sum(math.exp(output))
+        for (let x = 0; x < output.length; x++) {
+            arr[x] = math.exp(output[x]) / denominator
         }
-
-        
-    }
-    softmax(layer) {
-        let denominator = math.sum(math.exp(globalVariables.output[layer]))
-        for (let x = 0; x < globalVariables.output[layer].length; x++) {
-            globalVariables.output[layer][x] =
-                math.exp(globalVariables.output[layer][x]) / denominator
-        }
+        return arr
     }
 }

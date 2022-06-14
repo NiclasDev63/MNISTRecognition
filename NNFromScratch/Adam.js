@@ -1,7 +1,7 @@
 "use strict"
 
 import * as math from 'mathjs';
-import { globalVariables } from "./model.js"
+
 
 /**
  * @param {float} learningRate - The learning rate to use for the Adam gradient descent algorithm 

@@ -1,92 +1,132 @@
 "use strict"
 
-
 import * as math from 'mathjs';
 import { Layer } from "./Layer.js"
+import { argMax } from "/Users/nicla/Desktop/Programming/NNWebsite/src/utils/argMax.js"
+import { categoricalCrossEntropy } from "./LossFunction.js"
 
-export const globalVariables = {
-    input: [],
-    layerCount: 0,
-    weights: [],
-    bias: [],
-    output: [],
-    layers: [],
-    y_true: [],
-    y_pred: []
-}
+// export const globalVariables = {
+//     input: [],
+//     layerCount: 0,
+//     weights: [],
+//     bias: [],
+//     output: [],
+//     layers: [],
+//     y_true: [],
+//     y_pred: []
+// }
 
 class Model {
-    constructor() {
-        this.test = 0
+    constructor(input, y_train) {
+        this.input = input
+        this.y_train = y_train
+        this.layerCount = 0
+        this.weights = []
+        this.bias = []
+        this.output = []
+        this.layers = []
     }
 
     addLayer(args) {
-        if (globalVariables.layerCount === 0) {
-            globalVariables.layers[globalVariables.layerCount] = new Layer(args.inputDim, args.units, args.activation, args.useBias)
+        if (this.layerCount === 0) {
+            this.layers[this.layerCount] = new Layer(args.inputDim, args.units, args.activation, args.useBias)
         } else {
-            globalVariables.layers[globalVariables.layerCount] = new Layer(args.units, args.units, args.activation, args.useBias)
+            this.layers[this.layerCount] = new Layer(args.units, args.units, args.activation, args.useBias)
         }
+        this.initializeWeights(args.units)
+        if (args.useBias) {
+            this.initializeBias()
+        }
+        this.layerCount++
     }
 
+    initializeWeights(units) {
+        if (this.layerCount !== 0) {
+            this.weights[this.layerCount] =
+                //math.random([this.layers[this.layerCount - 1].units, this.layers[this.layerCount].units], 0, 2)
+                math.random([units, this.layers[this.layerCount - 1].units], 0, 2)
+        } else {
+            this.weights[this.layerCount] =
+                //math.random([this.input.length, this.layers[this.layerCount].units], -2, 2)
+                math.random([units, this.input.length], -2, 2)
+        }
+        this.output[this.layerCount] = math.zeros([units])
+    }
+
+    initializeBias() {
+        this.bias[this.layerCount] =
+            math.random([this.layers[this.layerCount].units], -1, 1)
+    }
+
+    // forwardPass() {
+    //     for (let layer = 0; layer < this.layerCount; layer++) {
+    //         for (let y = 0; y < this.weights[layer][0].length; y++) {
+    //             let sum = 0
+    //             for (let x = 0; x < this.weights[layer].length; x++) {
+    //                 if (layer === 0) {
+    //                     sum += this.input[x] * this.weights[layer][x][y]
+
+    //                 }else{
+    //                 sum += this.output[layer - 1][x] * this.weights[layer][x][y]
+    //                 }
+    //             }
+    //             if (this.useBias) {
+    //                 this.output[layer][y] = this.bias[layer][y] + sum
+    //                 continue
+    //             }
+    //             this.output[layer][y] = this.bias[layer][y] + sum
+    //         }
+    //         let activation = this.layers[layer].activation
+    //         this.output[layer] = this.chooseActivation(activation, layer)
+    //     }
+    //     let output = this.output[this.layerCount - 1]
+    //     categoricalCrossEntropy(output, this.y_train)
+    // }
     forwardPass() {
-        for (let layer = 0; layer < globalVariables.layerCount; layer++) {
-            for (let y = 0; y < globalVariables.weights[layer][0].length; y++) {
-                let sum = 0
-                for (let x = 0; x < globalVariables.weights[layer].length; x++) {
-                    if (layer === 0) {
-                        sum += globalVariables.input[x] * globalVariables.weights[layer][x][y]
-                    } else {
-                        sum += globalVariables.output[layer - 1][x] * globalVariables.weights[layer][x][y]
-                    }
-                }
-                globalVariables.output[layer][y] = globalVariables.bias[layer][y] + sum
-            }
-            let activation = globalVariables.layers[layer].activation
-            this.chooseActivation(activation, layer)
-        }
-    }
+        let input = this.input
+        for (let layer = 0; layer < this.layerCount; layer++) {
+            let temp = math.multiply(this.weights[layer], input)
+            temp = math.add(temp, this.bias[layer])
 
+            this.output[layer] = temp
+
+            let activation = this.layers[layer].activation
+            this.output[layer] = this.chooseActivation(activation, layer)
+
+            input = this.output[layer]
+        }
+
+    }
     chooseActivation(activation, layer) {
+        let output;
         switch (activation) {
-            case "relu": globalVariables.layers[layer].relu(layer); break;
-            case "softmax": globalVariables.layers[layer].softmax(layer); break;
+            case "relu": output = this.layers[layer].relu(this.output[layer]); break;
+            case "softmax": output = this.layers[layer].softmax(this.output[layer]); break;
             default: console.log("This Activation function doesn't exist"); break;
         }
-    }
-
-    categoricalCrossEntropy() {
-        globalVariables.y_pred = globalVariables.layerCount - 1
-        globalVariables.y_pred = globalVariables.output[globalVariables.y_pred]
-
-        const loss = -math.sum(math.multiply(globalVariables.y_true, math.log(globalVariables.y_pred)))
-            / globalVariables.y_true.length
-        console.log("Loss: ", loss)
-    }
-
-    categoricalDerivate() {
-        return math.subtract(globalVariables.y_pred, globalVariables.y_true)
-
+        return output
     }
 
 }
-const model = new Model()
 
-globalVariables.input = [0, 2, 3, -4, 6, -6]
-globalVariables.y_true = [0, 1, 0, 0, 0, 0, 0, 0, 0, 0]
 
-let inputDim = globalVariables.input.length
+const input = [1, 50, 1, 0.5, 30, 1]
 
-model.addLayer({ inputDim: inputDim, units: 2, activation: "relu", useBias: true })
-model.addLayer({ units: 2, activation: "relu", useBias: true })
+const y_true = [0, 1, 0, 0, 0, 0, 0, 0, 0, 0]
+
+
+
+const inputDim = input.length
+
+const model = new Model(input, y_true)
+
+model.addLayer({ inputDim: inputDim, units: 256, activation: "relu", useBias: true })
+model.addLayer({ units: 256, activation: "relu", useBias: true })
 model.addLayer({ units: 10, activation: "softmax", useBias: true })
-
 
 
 
 
 model.forwardPass()
 
-console.log(globalVariables.output)
-
-model.categoricalCrossEntropy()
-
+console.log(model.output)
