@@ -26,13 +26,17 @@ export class Layer {
         return arr
     }
 
+    // numerically stable softmax version (prevents overflow)
     softmax(output) {
-        output = math.divide(output, 1e+4)
-        let arr = []
-        let denominator = math.sum(math.exp(output))
-        for (let x = 0; x < output.length; x++) {
-            arr[x] = math.exp(output[x]) / denominator
-        }
-        return arr
+        const max = math.max(output)
+
+        const z = math.subtract(output, max)
+        const numerator = math.exp(z)
+
+        const denominator = math.sum(numerator)
+
+        const softmax = math.divide(numerator, denominator)
+
+        return softmax
     }
 }
