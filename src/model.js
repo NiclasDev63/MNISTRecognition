@@ -1,6 +1,9 @@
 "use strict";
 
 const tf = require("@tensorflow/tfjs");
+const tfvis = require("@tensorflow/tfjs-vis")
+
+const trainingPlot =  document.getElementById("lossData")
 
 module.exports = class Model {
   constructor(
@@ -12,6 +15,8 @@ module.exports = class Model {
   ) {
     this.x_train = tf.tensor(x_train);
     this.y_train = tf.tensor(y_train);
+
+    console.log(this.x_train.data())
 
     this.x_test = tf.tensor(x_test);
     this.y_test = tf.tensor(y_test);
@@ -30,33 +35,32 @@ module.exports = class Model {
   createModel() {
     this.model = tf.sequential({
       layers: [
-        tf.layers.conv2d({ kernelSize: 3, filters: 16, inputShape: [28, 28, 1] }),
+        tf.layers.dense({ units: 20, inputShape: [4] }),
         tf.layers.activation({ activation: "relu" }),
-        tf.layers.flatten(),
-        tf.layers.dense({ units: 10 }),
-        tf.layers.activation({ activation: "relu" })
+        tf.layers.dense({ units: 20 }),
+        tf.layers.activation({ activation: "relu" }),
+        tf.layers.dense({ units: 3 }),
+        tf.layers.activation({ activation: "sigmoid" })
       ]
     })
     this.compileModel();
   }
 
-  trainModel() {
+  async trainModel() {
     this.model.summary();
-    return new Promise((resolve) => {
-      return resolve(
-        this.model
-          .fit(this.x_train, this.y_train, {
-            epochs: this.epochs,
-            batchSize: 128,
-          })
-          .then((info) => {
-            console.log(
-              "Final accuracy",
-              info.history.acc[info.history.acc.length - 1]
-            );
-          })
-      );
-    });
+    const callbacks = tfvis.show.fitCallbacks(trainingPlot, ['loss'], {callbacks:['onEpochEnd']})
+    await this.model
+      .fit(this.x_train, this.y_train, {
+        epochs: this.epochs,
+        batchSize: 10,
+        callbacks: callbacks
+      })
+      .then((info) => {
+        console.log(
+          "Final accuracy",
+          info.history.acc[info.history.acc.length - 1]
+        );
+      })
   }
 
   evaluateModel() {
@@ -67,18 +71,5 @@ module.exports = class Model {
     tf.print(result[0]);
     tf.print(result[1]);
   }
-  async predictNumber(input) {
-    let outPut = await this.model.predict(input)
-    let prediction = outPut.argMax(-1)
-    let confidence = outPut.max()
-    prediction = Array.from(prediction.dataSync())
-    confidence = Array.from(confidence.dataSync())
-    return [prediction, confidence];
-  }
 
-  async loadModel(file) {
-    this.model = await tf.loadLayersModel(
-      file
-    );
-  }
 };

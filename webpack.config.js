@@ -18,7 +18,7 @@ const config = {
   resolve: {
     fallback: {
       tf: "https://cdnjs.cloudflare.com/ajax/libs/tensorflow/3.18.0/tf.min.js",
-      seedrandom: false
+      seedrandom: false,
     },
   },
   plugins: [

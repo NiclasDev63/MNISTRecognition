@@ -10,6 +10,7 @@
   "start": "react-scripts --openssl-legacy-provider start",
   "dependencies": {
     "@tensorflow/tfjs-node": "^3.18.0",
+    "@tensorflow/tfjs-vis": "^1.5.1",
     "tf": "^1.0.1"
   },
   "devDependencies": {
@@ -17,8 +18,10 @@
     "@babel/preset-env": "^7.18.2",
     "@webpack-cli/generators": "^2.4.2",
     "babel-loader": "^8.2.5",
+    "fs-web": "^1.0.1",
     "html-webpack-plugin": "^5.5.0",
     "mathjs": "^10.6.3",
+    "mini-css-extract-plugin": "^2.6.1",
     "node-gyp": "^9.0.0",
     "prettier": "^2.6.2",
     "style-loader": "^3.3.1",

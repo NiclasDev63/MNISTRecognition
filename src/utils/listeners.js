@@ -2,10 +2,12 @@
 
 const Canvas = require("/src/canvas")
 const math = require("mathjs")
-const Model = require("/src/trainedModel")
+const TrainedModel = require("/src/trainedModel")
+
 
 const canvas = new Canvas()
-
+const Model = require("C:/Users/nicla/Desktop/Programming/NNWebsite/src/model.js")
+const getData = require("./getData")
 
 const htmlElements = {
   rstButton: document.getElementById("rstButton"),
@@ -16,7 +18,7 @@ const htmlElements = {
   confidence: document.getElementById("confidence")
 };
 
-const model = new Model(htmlElements.modelJson)
+const model = new TrainedModel(htmlElements.modelJson)
 
 module.exports = function runListeners() {
 
@@ -39,6 +41,12 @@ module.exports = function runListeners() {
 
   htmlElements.rstButton.addEventListener("click", () => {
     canvas.clearCanvas()
+    getData().then((data) => {
+      console.log(data.x_train[0])
+      const model2 = new Model(data.x_train, data.y_train, 0, 0, 1)
+      model2.createModel()
+      model2.trainModel()
+    })
   })
 
   htmlElements.predButton.addEventListener("click", () => {
