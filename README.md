@@ -5,4 +5,5 @@
 - add more comments / Notations
 - clean up redundancy and unused code
 - refactor code if needed
-- better directory structur
+- better folder structur
+- overthink website design
