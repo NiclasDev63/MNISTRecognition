@@ -3,30 +3,25 @@
 
 <head>
     <meta charset="UTF-8">
-    <link id="modelJson" href="/MNISTClassifier/model.json" rel="import">
+    <link id="modelJson" href="/model/model.json" rel="import">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Audiowide">
 </head>
 
 <body id="body">
-    <h1 id="title">Neural Network From Scratch</h1>
-    <div class="heroText">
-        <h1>THE FUTURE OF AI
-            <br>
-            IS NOW
-        </h1>
+    <h1 id="title">MNIST Recognition</h1>
     </div>
     <div class="container1">
         <div class="flexcon">
             <div class="prediction">
                 <h1>PREDICTION &nbsp</h1>
                 <h2 id="predNumber">Draw a Number between 0-9</h2>
+                <h3 id="confidence"></h3>
             </div>
-            <table id="board">
-                <tbody>
-                </tbody>
-            </table>
+            <div id="myCanvasDiv">
+                <canvas id="myCanvas" width="280" height="280"></canvas>
+            </div>
             <div class="flexcon2">
                 <button id="rstButton">RESET</button>
                 <button id="predButton">PREDICT</button>
@@ -44,7 +39,7 @@
                 </div>
                 <div>
                     <h3>Optimizer</h3>
-                    <p>Adamax</p>
+                    <p>Adam</p>
                 </div>
                 <div>
                     <h3>Loss function</h3>
@@ -64,7 +59,7 @@
                 </div>
                 <div>
                     <h3>Trainable Parameters</h3>
-                    <p>269.322</p>
+                    <p>75.710</p>
                 </div>
             </div>
             <div class="NNModel"></div>
@@ -79,7 +74,7 @@
             touchControls: true,
             gyroControls: false,
             minHeight: 200.00,
-            minWidth: 200.00,
+            minWidth: 200,
             scale: 1.00,
             scaleMobile: 1.00,
             color: 0xd79fc,
@@ -89,7 +84,6 @@
         })
     </script>
     <script src="/dist/main.js"></script>
-
 </body>
 
 </html>

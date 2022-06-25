@@ -9,7 +9,6 @@ module.exports = class Model {
     x_test = 0,
     y_test = 0,
     epochs = 0,
-    loadModel = false
   ) {
     this.x_train = tf.tensor(x_train);
     this.y_train = tf.tensor(y_train);
@@ -21,9 +20,8 @@ module.exports = class Model {
   }
 
   compileModel() {
-    const adamax = tf.train.adamax(0.001);
     this.model.compile({
-      optimizer: adamax,
+      optimizer: "adam",
       loss: "categoricalCrossentropy",
       metrics: ["accuracy"],
     });
@@ -32,15 +30,13 @@ module.exports = class Model {
   createModel() {
     this.model = tf.sequential({
       layers: [
-        tf.layers.dense({
-          inputShape: [784],
-          units: 256,
-          activation: "relu",
-        }),
-        tf.layers.dense({ units: 256, activation: "relu" }),
-        tf.layers.dense({ units: 10, activation: "softmax" }),
-      ],
-    });
+        tf.layers.conv2d({ kernelSize: 3, filters: 16, inputShape: [28, 28, 1] }),
+        tf.layers.activation({ activation: "relu" }),
+        tf.layers.flatten(),
+        tf.layers.dense({ units: 10 }),
+        tf.layers.activation({ activation: "relu" })
+      ]
+    })
     this.compileModel();
   }
 
@@ -71,25 +67,17 @@ module.exports = class Model {
     tf.print(result[0]);
     tf.print(result[1]);
   }
-  predictNumber(input) {
-    input = tf.tensor(input).reshape([-1, 784]);
-    let outPut = this.model.predict(input).argMax(-1)
-    outPut = outPut.dataSync()
-    return Array.from(outPut);
-  }
-  async saveModel() {
-    try {
-      let tsModelTraining = await this.model.save(
-        "file:///Users/nicla/Desktop/Programming/MNISTWebsite/MNISTClassifier"
-      );
-    } catch (error) {
-      console.log(error);
-    }
+  async predictNumber(input) {
+    let outPut = await this.model.predict(input)
+    let prediction = outPut.argMax(-1)
+    let confidence = outPut.max()
+    prediction = Array.from(prediction.dataSync())
+    confidence = Array.from(confidence.dataSync())
+    return [prediction, confidence];
   }
 
   async loadModel(file) {
     this.model = await tf.loadLayersModel(
-      //"file:///Users/nicla/Desktop/Programming/MNISTWebsite/MNISTClassifier/model.json"
       file
     );
   }

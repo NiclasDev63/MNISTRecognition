@@ -1,5 +1,7 @@
 "use strict";
 
+const tf = require("@tensorflow/tfjs");
+
 module.exports = class Canvas {
   constructor() {
     this.canvas = document.getElementById("myCanvas");
@@ -18,8 +20,9 @@ module.exports = class Canvas {
   draw(event) {
     if (this.drawLine) {
       this.context.beginPath();
-      this.context.lineWidth = 5;
-      this.context.strokeStyle = "blue";
+      this.context.lineWidth = 15;
+      
+      this.context.strokeStyle = "white";
       this.context.moveTo(this.mousePos.x, this.mousePos.y);
 
       this.getMousePosition(event);
@@ -34,41 +37,11 @@ module.exports = class Canvas {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
 
-  getImageFromInput() {
-    // return this.context.getImageData(
-    //   0,
-    //   0,
-    //   this.canvas.width,
-    //   this.canvas.height
-    // );
-
-    return this.canvas.toDataURL();
+  // https://github.com/maneprajakta/Digit_Recognition_Web_App/blob/master/js/main.js
+  getCanvasOutput() {
+    let tensor = tf.browser.fromPixels(this.canvas).resizeNearestNeighbor([28, 28]).mean(2).expandDims(2).expandDims().toFloat();
+    tensor = tensor.div(255.0)
+    return tensor;
   }
 
-  resizeImg(img) {
-    const img = new Image();
-
-    img.src = this.getImageFromInput();
-    let oc = document.createElement("canvas"),
-      octx = oc.getContext("2d");
-
-    oc.width = 448 * 0.5;
-    oc.height = 448 * 0.5;
-
-    octx.drawImage(img, 0, 0, oc.width, oc.height);
-
-    octx.drawImage(img, 0, 0, oc.width * 0.5, oc.height * 0.5);
-
-    this.context.drawImage(
-      img,
-      0,
-      0,
-      oc.width * 0.25,
-      oc.height * 0.25,
-      0,
-      0,
-      this.canvas.width,
-      this.canvas.height
-    );
-  }
 };

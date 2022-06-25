@@ -1,48 +1,52 @@
 "use strict";
 
-const Board = require("/src/board");
-const globalEventListener = require("./GlobalEventListener");
-const getPredNumber = require("./feedInputIntoModel");
+const Canvas = require("/src/canvas")
+const math = require("mathjs")
+const Model = require("./trainedModel")
 
-const board = new Board();
-board.createBoard();
+const canvas = new Canvas()
+
 
 const htmlElements = {
   rstButton: document.getElementById("rstButton"),
   predButton: document.getElementById("predButton"),
-  boardElem: document.getElementById("board"),
+  canvas: document.getElementById("myCanvas"),
   modelJson: document.getElementById("modelJson").getAttribute("href"),
-  predOutPut: document.getElementById("predNumber")
+  predOutPut: document.getElementById("predNumber"),
+  confidence: document.getElementById("confidence")
 };
 
+const model = new Model(htmlElements.modelJson)
+
 module.exports = function runListeners() {
-  globalEventListener("mousedown", "td", (e) => {
-    board.drawing = true;
-    board.draw(e.target);
-  });
 
-  htmlElements.predButton.addEventListener("click", () => {
-    board.createArray();
-    getPredNumber(board.outPutArr, htmlElements.modelJson).then((pred) => {
-      let prediction = pred[0];
-      htmlElements.predOutPut.innerText = prediction
-    });
-  });
+  htmlElements.canvas.addEventListener("mousedown", (event) => {
+    canvas.drawLine = true
+    canvas.getMousePosition(event)
+  })
 
-  globalEventListener("mouseover", "td", (e) => {
-    board.draw(e.target);
-  });
+  htmlElements.canvas.addEventListener("mousemove", (event) => {
+    canvas.draw(event)
+  })
 
-  globalEventListener("mouseup", "td", () => {
-    board.drawing = false;
-  });
+  htmlElements.canvas.addEventListener("mouseup", () => {
+    canvas.drawLine = false
+  })
 
-  htmlElements.boardElem.addEventListener("mouseleave", () => {
-    board.drawing = false;
-  });
+  htmlElements.canvas.addEventListener("mouseleave", () => {
+    canvas.drawLine = false
+  })
 
   htmlElements.rstButton.addEventListener("click", () => {
-    board.resetBoard();
-    htmlElements.predOutPut.innerText = "Draw a Number between 0-9"
-  });
+    canvas.clearCanvas()
+  })
+
+  htmlElements.predButton.addEventListener("click", () => {
+    let canvasOutput = canvas.getCanvasOutput()
+    model.predictNumber(canvasOutput).then((pred) => {
+      htmlElements.predOutPut.innerText = pred[0]
+      htmlElements.confidence.innerText = "Confidence " + math.round(pred[1] * 100, 2) + "%"
+    });
+  })
+
 };
