@@ -5,3 +5,4 @@
 - add more comments / Notations
 - clean up redundancy and unused code
 - refactor code if needed
+- better directory structur
