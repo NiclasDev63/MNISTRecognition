@@ -2,7 +2,7 @@
 
 const Canvas = require("/src/canvas")
 const math = require("mathjs")
-const Model = require("./trainedModel")
+const Model = require("/src/trainedModel")
 
 const canvas = new Canvas()
 
