@@ -68,8 +68,8 @@ if __name__ == "__main__":
         y=y_test
     )
 
-    #Save Model
-    model.save_weights("models.h5")
+    # #Save Model
+    # model.save_weights("models.h5")
 
-    tfjs.converters.save_keras_model(
-        model, "C:/Users/nicla/Desktop/Programming/NNWebsite/MNISTClassifier")
+    # tfjs.converters.save_keras_model(
+    #     model, "C:/Users/nicla/Desktop/Programming/NNWebsite/MNISTClassifier")

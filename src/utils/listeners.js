@@ -3,21 +3,30 @@
 const Canvas = require("/src/canvas")
 const math = require("mathjs")
 const TrainedModel = require("/src/trainedModel")
-
-
-const canvas = new Canvas()
-const Model = require("C:/Users/nicla/Desktop/Programming/NNWebsite/src/model.js")
-const getData = require("./getData")
+const draw = require("./drawNetwork");
+const drawNetwork = require("./drawNetwork");
 
 const htmlElements = {
   rstButton: document.getElementById("rstButton"),
-  predButton: document.getElementById("predButton"),
   canvas: document.getElementById("myCanvas"),
   modelJson: document.getElementById("modelJson").getAttribute("href"),
   predOutPut: document.getElementById("predNumber"),
-  confidence: document.getElementById("confidence")
+  confidence: document.getElementById("confidence"),
+  canvas2: document.getElementById("myCanvas")
 };
 
+function getPred(canvasOutput){
+  model.predictNumber(canvasOutput).then((pred) => {
+    htmlElements.predOutPut.innerText = pred[0]
+    draw(pred[0], htmlElements.canvas)
+    htmlElements.confidence.innerText = "Confidence " + math.round(pred[1] * 100, 2) + "%"
+  });
+}
+
+//Initialize the Canvas with the Network in it
+//draw()
+
+const canvas = new Canvas()
 const model = new TrainedModel(htmlElements.modelJson)
 
 module.exports = function runListeners() {
@@ -33,6 +42,8 @@ module.exports = function runListeners() {
 
   htmlElements.canvas.addEventListener("mouseup", () => {
     canvas.drawLine = false
+    let canvasOutput = canvas.getCanvasOutput()
+    getPred(canvasOutput)
   })
 
   htmlElements.canvas.addEventListener("mouseleave", () => {
@@ -41,20 +52,7 @@ module.exports = function runListeners() {
 
   htmlElements.rstButton.addEventListener("click", () => {
     canvas.clearCanvas()
-    getData().then((data) => {
-      console.log(data.x_train[0])
-      const model2 = new Model(data.x_train, data.y_train, 0, 0, 1)
-      model2.createModel()
-      model2.trainModel()
-    })
-  })
-
-  htmlElements.predButton.addEventListener("click", () => {
-    let canvasOutput = canvas.getCanvasOutput()
-    model.predictNumber(canvasOutput).then((pred) => {
-      htmlElements.predOutPut.innerText = pred[0]
-      htmlElements.confidence.innerText = "Confidence " + math.round(pred[1] * 100, 2) + "%"
-    });
+    draw()
   })
 
 };

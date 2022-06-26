@@ -1,10 +1,23 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"><link id="modelJson" href="/model/model.json" rel="import"><link id="d3m" href="/node_modules/d3/src/index.js" rel="import"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Audiowide"><script defer="defer" src="main.js"></script></head><body id="body"><h1 id="title">MNIST Recognition</h1><div class="container1"><div class="flexcon"><div class="prediction"><h1>PREDICTION &nbsp</h1><h2 id="predNumber">Draw a Number between 0-9</h2><h3 id="confidence"></h3></div><div id="myCanvasDiv"><canvas id="myCanvas" width="400" height="400"></canvas></div><div class="flexcon2"><button id="rstButton">RESET</button></div></div><div class="flexcon3"><div class="modelData"><div><h3>Epochs trained</h3><p>10</p></div><div><h3>Learning rate</h3><p>0.001</p></div><div><h3>Optimizer</h3><p>Adam</p></div><div><h3>Loss function</h3><p>Categorical crossentropy</p></div><div><h3>Training Set</h3><p>MNIST</p></div><div><h3>Hidden layers</h3><p>1</p></div><div><h3>Batch size</h3><p>128</p></div><div><h3>Trainable Parameters</h3><p>216.650</p></div></div><canvas id="myCanvas2"></canvas></div><div style="display:none"><img id="testIMG" src="./model.png"></div></div><script>function draw(pred = -1, inputImage = null) {
+"use strict"
+
+
+//Visualizes the Network
+module.exports = function draw(pred = -1, inputImage = null) {
     let canvas = document.getElementById('myCanvas2');
     if (canvas.getContext) {
         let ctx = canvas.getContext('2d');
         window.devicePixelRatio=2
 
 
+        canvas.style.width = canvas.width + "px";
+        canvas.style.height = canvas.height + "px";
+        let scale = window.devicePixelRatio
+
+        canvas.width = Math.floor(canvas.width * scale);
+        console.log(canvas.width)
+        canvas.height = Math.floor(canvas.height * scale);
+
+        ctx.scale(scale, scale)
         const bottom = canvas.height;
 
         //Input info box
@@ -110,4 +123,3 @@
 
     }
 }
-draw()</script><script src="/dist/main.js"></script></body></html>

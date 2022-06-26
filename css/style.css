@@ -4,16 +4,6 @@ body {
     color: rgb(102, 102, 236);
 }
 
-
-.heroText {
-    top: 50vh;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    position: absolute;
-    font-weight: 100;
-    text-align: center;
-}
-
 .container1 {
     display: grid;
     margin-top: 20rem;
@@ -29,8 +19,8 @@ body {
     display: flex;
     flex-wrap: wrap;
     background-color: white;
-    max-width: 45rem;
-    min-width: 45rem;
+    max-width: 40rem;
+    min-width: 40rem;
     min-height: 40rem;
     max-height: 40rem;
     margin-left: 2rem;
@@ -81,6 +71,7 @@ body {
 #myCanvasDiv {
     display: inline-block;
     position: absolute;
+
 }
 
 table {
@@ -105,12 +96,13 @@ tr {
 }
 
 .flexcon3 {
+    display: flex;
     flex-wrap: wrap;
     background-color: white;
-    max-width: 69rem;
-    min-width: 69rem;
-    min-height: 50rem;
-    max-height: 50rem;
+    max-width: 80rem;
+    min-width: 80rem;
+    min-height: 70rem;
+    max-height: 70rem;
     margin-left: 2rem;
     box-shadow: 0.5rem 0.5rem 2rem black;
     grid-column-start: 2;
@@ -120,7 +112,7 @@ tr {
 .flexcon3 .modelData {
     display: grid;
     grid-template-columns: 25% 25% 25% 25%;
-    border: 1px solid;
+    width: 100%;
 }
 
 .flexcon3 .modelData>div {
@@ -129,8 +121,8 @@ tr {
     border: 1px solid;
 }
 
-.TrainingGraphs {
-    border: solid;
-    height: 74%;
-    background-color: black;
+.flexcon3 #myCanvas2{
+    border: solid 1px;
+    flex-grow: 1;
+    background-color: green;
 }

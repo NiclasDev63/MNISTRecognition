@@ -21,7 +21,7 @@ module.exports = class Canvas {
     if (this.drawLine) {
       this.context.beginPath();
       this.context.lineWidth = 15;
-      
+
       this.context.strokeStyle = "white";
       this.context.moveTo(this.mousePos.x, this.mousePos.y);
 
@@ -40,8 +40,7 @@ module.exports = class Canvas {
   // https://github.com/maneprajakta/Digit_Recognition_Web_App/blob/master/js/main.js
   getCanvasOutput() {
     let tensor = tf.browser.fromPixels(this.canvas).resizeNearestNeighbor([28, 28]).mean(2).expandDims(2).expandDims().toFloat();
-    tensor = tensor.div(255.0)
-    return tensor;
+    return tensor.div(255.0);
   }
 
 };

@@ -2,6 +2,9 @@
 
 const tf = require("@tensorflow/tfjs");
 
+/**
+ * @param file the model.json of the trained model
+ */
 module.exports = class TrainedModel {
     constructor(file) {
         this.file = file

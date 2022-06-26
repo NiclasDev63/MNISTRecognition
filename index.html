@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <link id="modelJson" href="/model/model.json" rel="import">
+    <link id="d3m" href="/node_modules/d3/src/index.js" rel="import">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Audiowide">
@@ -20,18 +21,17 @@
                 <h3 id="confidence"></h3>
             </div>
             <div id="myCanvasDiv">
-                <canvas id="myCanvas" width="280" height="280"></canvas>
+                <canvas id="myCanvas" width="400" height="400"></canvas>
             </div>
             <div class="flexcon2">
                 <button id="rstButton">RESET</button>
-                <button id="predButton">PREDICT</button>
             </div>
         </div>
         <div class="flexcon3">
             <div class="modelData">
                 <div>
                     <h3>Epochs trained</h3>
-                    <p>15</p>
+                    <p>10</p>
                 </div>
                 <div>
                     <h3>Learning rate</h3>
@@ -59,32 +59,136 @@
                 </div>
                 <div>
                     <h3>Trainable Parameters</h3>
-                    <p>75.710</p>
+                    <p>216.650</p>
                 </div>
             </div>
-            <div class="TrainingGraphs">
-                <div id="trainingData"></div>
-                <div id="lossData"></div>
-            </div>
+            <canvas id="myCanvas2"></canvas>
+        </div>
+        <div style="display:none">
+            <img id="testIMG" src="./model.png">
         </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vanta@0.5.21/dist/vanta.net.min.js"></script>
     <script>
-        VANTA.NET({
-            el: "body",
-            mouseControls: true,
-            touchControls: true,
-            gyroControls: false,
-            minHeight: 200.00,
-            minWidth: 200,
-            scale: 1.00,
-            scaleMobile: 1.00,
-            color: 0xd79fc,
-            backgroundColor: 0x0,
-            points: 8.00,
-            maxDistance: 25.00
-        })
+        function draw(pred = -1, inputImage = null) {
+    let canvas = document.getElementById('myCanvas2');
+    if (canvas.getContext) {
+        let ctx = canvas.getContext('2d');
+        window.devicePixelRatio=2
+
+        const scale = window.devicePixelRatio
+
+        canvas.width = Math.floor(canvas.width * scale);
+        console.log(canvas.width)
+        canvas.height = Math.floor(canvas.height * scale);
+
+        ctx.scale(scale, scale)
+
+        const bottom = canvas.height;
+
+        //Input info box
+        const xInfo = canvas.width / 2 + 20
+        const yInfo = 8
+        const widthInfo = 100
+        const heightInfo = 20
+        ctx.fillRect(xInfo, yInfo, widthInfo, heightInfo);
+        ctx.fillStyle = 'white';
+        ctx.font = "10px serif";
+        ctx.fillText("Input Layer (28, 28, 1)", xInfo + 5, yInfo + heightInfo / 2 + 2);
+
+        //Draw Input Image
+        const imgWidth = 28
+        const imgHeight = 28
+        const xInput = (canvas.width / 2) - (imgWidth / 2)
+        const yInput = 4
+        ctx.fillStyle = 'black';
+        ctx.fillRect(xInput, yInput, imgWidth, imgHeight)
+        if (inputImage !== null) {
+            ctx.strokeStyle = 'blue';
+            ctx.drawImage(inputImage, xInput, yInput, imgWidth, imgHeight);
+        }else{
+            ctx.clearRect(xInput, yInput, imgWidth, imgHeight)
+            ctx.fillStyle = 'black';
+            ctx.fillRect(xInput, yInput, imgWidth, imgHeight) 
+        }
+
+        //Draw Conv2D Layer
+        const xConv2D = 25
+        const yConv2D = 40
+        const widthConv2D = canvas.width - (2 * xConv2D)
+        const heightConv2D = 15
+
+        ctx.beginPath();
+        ctx.moveTo(xInput + imgHeight / 2, yInput + imgHeight);
+        ctx.lineTo(xConv2D + widthConv2D / 2, yConv2D);
+        ctx.stroke();
+        ctx.fillStyle = 'black';
+        ctx.fillRect(xConv2D, yConv2D, widthConv2D, heightConv2D);
+        ctx.fillStyle = 'white';
+        ctx.font = "10px serif";
+        ctx.fillText("Conv2D Layer (26, 26, 32)", canvas.width / 2 - xConv2D - 25, yConv2D + 10);
+
+        //Draw Activation Layer (ReLU)
+        const xReLU = 25
+        const yReLU = 65
+        const widthReLU = canvas.width - (2 * xReLU)
+        const heightReLU = 15
+
+        ctx.beginPath();
+        ctx.moveTo(xConv2D + widthConv2D / 2, yConv2D + heightReLU);
+        ctx.lineTo(xReLU + widthReLU / 2, yReLU);
+        ctx.stroke();
+        ctx.fillStyle = 'black';
+        ctx.fillRect(xReLU, yReLU, widthReLU, heightReLU);
+        ctx.fillStyle = 'white';
+        ctx.font = "10px serif";
+        ctx.fillText("Activation Layer ReLU (26, 26, 32)", canvas.width / 2 - xReLU - 40, yReLU + 10)
+
+        //Draw Flatten Layer
+        const xFlatten = 25
+        const yFlatten = 90
+        const widthFlatten = canvas.width - (2 * xFlatten)
+        const heightFlatten = 20
+
+        ctx.beginPath();
+        ctx.moveTo(xReLU + widthReLU / 2, yReLU + heightReLU);
+        ctx.lineTo(xFlatten + widthFlatten / 2, yFlatten);
+        ctx.stroke();
+        ctx.fillStyle = 'black';
+        ctx.fillRect(xFlatten, yFlatten, widthFlatten, heightFlatten);
+        ctx.fillStyle = 'white';
+        ctx.font = "10px serif";
+        ctx.fillText("FLATTEN LAYER (21632)", canvas.width / 2 - xFlatten - 25, yFlatten + 12)
+
+
+        //Draw OutPut Layer
+        const spaceBetweenNodes = 20
+        const radius = 8;
+        const outPutNodes = 10
+        let x = 25
+        for (let i = 0; i < outPutNodes; i++) {
+            ctx.beginPath();
+            ctx.arc(x, bottom - radius * 2, radius, 0, 2 * Math.PI);
+            if (i == pred) {
+                ctx.fillStyle = 'blue';
+                ctx.strokeStyle = 'blue';
+            } else {
+                ctx.fillStyle = 'white';
+                ctx.strokeStyle = 'black';
+            }
+            ctx.fill();
+            ctx.lineWidth = 1;
+            ctx.moveTo(widthFlatten / 2 + xFlatten, yFlatten + heightFlatten);
+            ctx.lineTo(x, bottom - radius * 2 - radius);
+            ctx.stroke();
+            ctx.fillStyle = 'black';
+            ctx.font = '10px serif';
+            ctx.fillText(i, x - 2, bottom - radius - 5)
+            x = x + spaceBetweenNodes + radius
+        }
+
+    }
+}
+draw()
     </script>
     <script src="/dist/main.js"></script>
 </body>
