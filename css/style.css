@@ -1,7 +1,7 @@
 body {
     margin: 0;
     font-family: "Audiowide", Helvetica, sans-serif;
-    color: rgb(102, 102, 236);
+    color: rgb(107, 164, 184);
 }
 
 
@@ -19,14 +19,13 @@ body {
 }
 
 .informationGrid > div{
-    border: solid;
+    box-shadow: 4px 4px 20px;
     text-align: center;
 }
 
 .wrapper {
     display: grid;
     grid-template-columns: auto  auto;
-    border: solid;
     margin: 2rem;
     height: 200rem;
 }
@@ -45,9 +44,12 @@ body {
 }
 
 .drawingCanvasDiv #rstButton {
-    background-color: rgb(102, 102, 236);
+    background-color: rgb(107, 164, 184);
+    color: white;
     font-family: "Audiowide", Helvetica, sans-serif;
-    border-radius: 0.25rem;
+    border-radius: 0.30rem;
+    border: none;
+    box-shadow: 4px 4px 20px rgb(107, 164, 184);
     font-weight: bold;
     font-size: 2rem;
     padding: 1rem 2rem;
@@ -55,8 +57,9 @@ body {
 }
 
 #modelCanvas{
+    background-color: rgb(185, 211, 220);
     max-width: 100%;
     min-width: 40rem;
-    background-color: rgb(102, 102, 236);
+    box-shadow: 10px 10px 20px rgb(107, 164, 184);
     height: 20%;
 }

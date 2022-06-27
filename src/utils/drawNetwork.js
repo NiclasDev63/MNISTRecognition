@@ -46,7 +46,7 @@ module.exports = function draw(pred = -1, inputImage = null) {
         ctx.fillRect(xInput, yInput, imgWidth, imgHeight)
         if (inputImage !== null) {
             ctx.lineWidth = 10
-            ctx.strokeStyle = 'blue';
+            ctx.strokeStyle = "rgb(107, 164, 184)";
             ctx.drawImage(inputImage, xInput, yInput, imgWidth, imgHeight);
         } else {
             ctx.clearRect(xInput, yInput, imgWidth, imgHeight)
@@ -130,8 +130,8 @@ module.exports = function draw(pred = -1, inputImage = null) {
             ctx.arc(x, bottom - radius * 2, radius, 0, 2 * Math.PI);
             if (i == pred) {
                 ctx.lineWidth = 10
-                ctx.fillStyle = 'blue';
-                ctx.strokeStyle = 'blue';
+                ctx.fillStyle = "rgb(107, 164, 184)";
+                ctx.strokeStyle = "rgb(107, 164, 184)";
             } else {
                 ctx.lineWidth = 1
                 ctx.fillStyle = 'white';
