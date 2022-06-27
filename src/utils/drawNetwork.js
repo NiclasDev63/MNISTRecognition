@@ -103,21 +103,21 @@ module.exports = function draw(pred = -1, inputImage = null) {
         ctx.fillText("FLATTEN LAYER (21632)", canvas.width / 2 - xFlatten * 6.5, canvas.height / 1.85)
 
 
-        //Draw Activation Layer2 (ReLU)
-        const widthReLU2 = 450
-        const heightReLU2 = 80
-        const xReLU2 = canvas.width / 2 - widthReLU / 2
-        const yReLU2 = spaceBetweenLayers + heightFlatten + yFlatten
+        //Draw Activation Layer2 (Softmax)
+        const widthSoftmax = 450
+        const heightSoftmax = 80
+        const xSoftmax = canvas.width / 2 - widthReLU / 2
+        const ySoftmax = spaceBetweenLayers + heightFlatten + yFlatten
 
         ctx.beginPath();
         ctx.moveTo(xFlatten + widthFlatten / 2, yFlatten + heightFlatten);
-        ctx.lineTo(xReLU2 + widthReLU2 / 2, yReLU2);
+        ctx.lineTo(xSoftmax + widthSoftmax / 2, ySoftmax);
         ctx.stroke();
         ctx.fillStyle = 'black';
-        ctx.fillRect(xReLU2, yReLU2, widthReLU2, heightReLU2);
+        ctx.fillRect(xSoftmax, ySoftmax, widthSoftmax, heightSoftmax);
         ctx.fillStyle = 'white';
         ctx.font = "30px serif";
-        ctx.fillText("Activation Layer 2 ReLU (10)", canvas.width / 2 - 185, yReLU2 + 50)
+        ctx.fillText("Activation Layer 2 Softmax (10)", canvas.width / 2 - 185, ySoftmax + 50)
 
 
         //Draw OutPut Layer
@@ -138,7 +138,7 @@ module.exports = function draw(pred = -1, inputImage = null) {
                 ctx.strokeStyle = 'black';
             }
             ctx.fill();
-            ctx.moveTo(widthReLU2 / 2 + xReLU2, yReLU2 + heightReLU2);
+            ctx.moveTo(widthSoftmax / 2 + xSoftmax, ySoftmax + heightSoftmax);
             ctx.lineTo(x, bottom - radius * 2 - radius);
             ctx.stroke();
             ctx.fillStyle = 'black';
