@@ -10,4 +10,5 @@ The typography of the CNN looks like this:
   4. Flatten Layer (21,632)
   5. Activation Layer Softmax (10)
 
-![Preview](https://user-images.githubusercontent.com/83044113/175915224-f306a10e-2c61-45b3-9d8a-70a3064f1470.gif)
+
+![preview](https://user-images.githubusercontent.com/83044113/175919342-4acfef56-f073-4215-826d-abe185e64b38.gif)
