@@ -110,7 +110,7 @@ module.exports = function draw(pred = -1, inputImage = null) {
         const yReLU2 = spaceBetweenLayers + heightFlatten + yFlatten
 
         ctx.beginPath();
-        ctx.moveTo(xConv2D + widthConv2D / 2, yConv2D + heightReLU2);
+        ctx.moveTo(xFlatten + widthFlatten / 2, yFlatten + heightFlatten);
         ctx.lineTo(xReLU2 + widthReLU2 / 2, yReLU2);
         ctx.stroke();
         ctx.fillStyle = 'black';
