@@ -4,7 +4,7 @@ const tf = require("@tensorflow/tfjs");
 
 module.exports = class Canvas {
   constructor() {
-    this.canvas = document.getElementById("myCanvas");
+    this.canvas = document.getElementById("drawingCanvas");
     this.drawLine = false;
     this.mousePos = { x: 0, y: 0 };
     this.context = this.canvas.getContext("2d");

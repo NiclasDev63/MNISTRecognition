@@ -4,10 +4,7 @@ body {
     color: rgb(102, 102, 236);
 }
 
-.container1 {
-    display: grid;
-    margin-top: 20rem;
-}
+
 
 #title {
     text-align: center;
@@ -15,114 +12,51 @@ body {
     margin: auto;
 }
 
-.flexcon {
-    display: flex;
-    flex-wrap: wrap;
-    background-color: white;
+.informationGrid {
+    display: grid;
+    grid-template-columns: 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5%;
+    grid-auto-rows: auto;
+}
+
+.informationGrid > div{
+    border: solid;
+    text-align: center;
+}
+
+.wrapper {
+    display: grid;
+    grid-template-columns: auto  auto;
+    border: solid;
+    margin: 2rem;
+    height: 200rem;
+}
+
+.leftDiv {
+    display: grid;
+    grid-template-columns: auto  auto;
     max-width: 40rem;
     min-width: 40rem;
-    min-height: 40rem;
-    max-height: 40rem;
-    margin-left: 2rem;
-    margin-top: 5rem;
-    box-shadow: 0.5rem 0.5rem 2rem black;
-    grid-column-start: 1;
-    grid-column-end: 2;
-}
-
-.flexcon .prediction {
-    margin-left: 65%;
-    margin-top: 20%;
-}
-
-.flexcon .prediction h1 {
-    height: 2rem;
-}
-
-#confidence {
-    height: 2rem;
 }
 
 
-.flexcon2 {
-    position: relative;
-    bottom: 1rem;
-    border: solid;
-}
-
-.flexcon2 button {
-    border-radius: 0.5rem;
-    width: 10rem;
-    min-height: 4rem;
-    cursor: pointer;
-    margin: 2rem;
-    font-weight: 900;
-    font-family: "Audiowide", Helvetica, sans-serif;
-    background-color: rgb(102, 102, 236);
-    color: white;
-}
-
-#myCanvas {
-    cursor: crosshair;
-    border: solid;
+.drawingCanvasDiv #drawingCanvas {
     background-color: black;
-}
-
-#myCanvasDiv {
-    display: inline-block;
-    position: absolute;
-
-}
-
-table {
-    margin: 2rem;
-    border-collapse: collapse;
-    width: 24rem;
-    position: absolute;
-    border: solid;
-}
-
-td {
-    white-space: none;
     cursor: pointer;
 }
 
-.clicked {
-    background: rgb(102, 102, 236);
+.drawingCanvasDiv #rstButton {
+    background-color: rgb(102, 102, 236);
+    font-family: "Audiowide", Helvetica, sans-serif;
+    border-radius: 0.25rem;
+    font-weight: bold;
+    font-size: 2rem;
+    padding: 1rem 2rem;
+    cursor: pointer;
 }
 
-tr {
-    height: 1rem;
-}
-
-.flexcon3 {
-    display: flex;
-    flex-wrap: wrap;
-    background-color: white;
-    max-width: 80rem;
-    min-width: 80rem;
-    min-height: 70rem;
-    max-height: 70rem;
-    margin-left: 2rem;
-    box-shadow: 0.5rem 0.5rem 2rem black;
-    grid-column-start: 2;
-    grid-column-end: 3;
-}
-
-.flexcon3 .modelData {
-    display: grid;
-    grid-template-columns: 25% 25% 25% 25%;
-    width: 100%;
-}
-
-.flexcon3 .modelData>div {
-    display: inline;
-    text-align: center;
-    border: 1px solid;
-}
-
-.flexcon3 #myCanvas2{
-    border: solid 1px;
-    flex-grow: 1;
-    background-color: green;
+#modelCanvas{
+    max-width: 100%;
+    min-width: 40rem;
+    background-color: rgb(102, 102, 236);
+    height: 20%;
 }

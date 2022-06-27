@@ -8,11 +8,11 @@ const drawNetwork = require("./drawNetwork");
 
 const htmlElements = {
   rstButton: document.getElementById("rstButton"),
-  canvas: document.getElementById("myCanvas"),
+  canvas: document.getElementById("drawingCanvas"),
   modelJson: document.getElementById("modelJson").getAttribute("href"),
-  predOutPut: document.getElementById("predNumber"),
+  predOutPut: document.getElementById("prediction"),
   confidence: document.getElementById("confidence"),
-  canvas2: document.getElementById("myCanvas")
+  canvas2: document.getElementById("modelCanvas")
 };
 
 function getPred(canvasOutput){
@@ -23,8 +23,8 @@ function getPred(canvasOutput){
   });
 }
 
-//Initialize the Canvas with the Network in it
-//draw()
+//Initialize the Canvas with the Network
+draw()
 
 const canvas = new Canvas()
 const model = new TrainedModel(htmlElements.modelJson)

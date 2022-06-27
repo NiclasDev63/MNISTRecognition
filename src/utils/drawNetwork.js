@@ -1,56 +1,64 @@
-"use strict"
+let canvas = document.getElementById('modelCanvas');
+let ctx = canvas.getContext('2d');
+let dpi = window.devicePixelRatio
 
+// https://medium.com/wdstack/fixing-html5-2d-canvas-blur-8ebe27db07da
+function fix_dpi() {
+    //create a style object that returns width and height
+    let style = {
+        height() {
+            return +getComputedStyle(canvas).getPropertyValue('height').slice(0, -2);
+        },
+        width() {
+            return +getComputedStyle(canvas).getPropertyValue('width').slice(0, -2);
+        }
+    }
+    //set the correct attributes for a crystal clear image!
+    canvas.setAttribute('width', style.width() * dpi);
+    canvas.setAttribute('height', style.height() * dpi);
+}
 
-//Visualizes the Network
 module.exports = function draw(pred = -1, inputImage = null) {
-    let canvas = document.getElementById('myCanvas2');
     if (canvas.getContext) {
-        let ctx = canvas.getContext('2d');
-        window.devicePixelRatio=2
 
 
-        canvas.style.width = canvas.width + "px";
-        canvas.style.height = canvas.height + "px";
-        let scale = window.devicePixelRatio
+        fix_dpi()
 
-        canvas.width = Math.floor(canvas.width * scale);
-        console.log(canvas.width)
-        canvas.height = Math.floor(canvas.height * scale);
-
-        ctx.scale(scale, scale)
         const bottom = canvas.height;
+        const spaceBetweenLayers = 25
 
         //Input info box
-        const xInfo = canvas.width / 2 + 20
-        const yInfo = 8
-        const widthInfo = 100
-        const heightInfo = 20
+        const xInfo = canvas.width / 2 + 80
+        const yInfo = 35
+        const widthInfo = 300
+        const heightInfo = 40
         ctx.fillRect(xInfo, yInfo, widthInfo, heightInfo);
         ctx.fillStyle = 'white';
-        ctx.font = "10px serif";
-        ctx.fillText("Input Layer (28, 28, 1)", xInfo + 5, yInfo + heightInfo / 2 + 2);
+        ctx.font = "30px serif";
+        ctx.fillText("Input Layer (28, 28, 1)", xInfo + 15, yInfo + heightInfo / 2 + 5);
 
         //Draw Input Image
-        const imgWidth = 28
-        const imgHeight = 28
+        const imgWidth = 120
+        const imgHeight = 120
         const xInput = (canvas.width / 2) - (imgWidth / 2)
-        const yInput = 4
+        const yInput = 5
         ctx.fillStyle = 'black';
         ctx.fillRect(xInput, yInput, imgWidth, imgHeight)
         if (inputImage !== null) {
+            ctx.lineWidth = 10
             ctx.strokeStyle = 'blue';
             ctx.drawImage(inputImage, xInput, yInput, imgWidth, imgHeight);
-        }else{
+        } else {
             ctx.clearRect(xInput, yInput, imgWidth, imgHeight)
             ctx.fillStyle = 'black';
-            ctx.fillRect(xInput, yInput, imgWidth, imgHeight) 
+            ctx.fillRect(xInput, yInput, imgWidth, imgHeight)
         }
 
         //Draw Conv2D Layer
         const xConv2D = 25
-        const yConv2D = 40
+        const yConv2D = spaceBetweenLayers + imgHeight + yInput
         const widthConv2D = canvas.width - (2 * xConv2D)
-        const heightConv2D = 15
+        const heightConv2D = 60
 
         ctx.beginPath();
         ctx.moveTo(xInput + imgHeight / 2, yInput + imgHeight);
@@ -59,30 +67,30 @@ module.exports = function draw(pred = -1, inputImage = null) {
         ctx.fillStyle = 'black';
         ctx.fillRect(xConv2D, yConv2D, widthConv2D, heightConv2D);
         ctx.fillStyle = 'white';
-        ctx.font = "10px serif";
-        ctx.fillText("Conv2D Layer (26, 26, 32)", canvas.width / 2 - xConv2D - 25, yConv2D + 10);
+        ctx.font = "30px serif";
+        ctx.fillText("Conv2D Layer (26, 26, 32)", canvas.width / 2 - xConv2D - 100, yConv2D + 40);
 
         //Draw Activation Layer (ReLU)
-        const xReLU = 25
-        const yReLU = 65
-        const widthReLU = canvas.width - (2 * xReLU)
-        const heightReLU = 15
+        const widthReLU = 450
+        const heightReLU = 80
+        const xReLU = canvas.width / 2 - widthReLU / 2
+        const yReLU = spaceBetweenLayers + heightConv2D + yConv2D
 
         ctx.beginPath();
-        ctx.moveTo(xConv2D + widthConv2D / 2, yConv2D + heightReLU);
+        ctx.moveTo(xConv2D + widthConv2D / 2, yConv2D + heightConv2D);
         ctx.lineTo(xReLU + widthReLU / 2, yReLU);
         ctx.stroke();
         ctx.fillStyle = 'black';
         ctx.fillRect(xReLU, yReLU, widthReLU, heightReLU);
         ctx.fillStyle = 'white';
-        ctx.font = "10px serif";
-        ctx.fillText("Activation Layer ReLU (26, 26, 32)", canvas.width / 2 - xReLU - 40, yReLU + 10)
+        ctx.font = "30px serif";
+        ctx.fillText("Activation Layer ReLU (26, 26, 32)", canvas.width / 2 - 215, yReLU + 50)
 
         //Draw Flatten Layer
         const xFlatten = 25
-        const yFlatten = 90
+        const yFlatten = spaceBetweenLayers + heightReLU + yReLU
         const widthFlatten = canvas.width - (2 * xFlatten)
-        const heightFlatten = 20
+        const heightFlatten = 60
 
         ctx.beginPath();
         ctx.moveTo(xReLU + widthReLU / 2, yReLU + heightReLU);
@@ -91,33 +99,51 @@ module.exports = function draw(pred = -1, inputImage = null) {
         ctx.fillStyle = 'black';
         ctx.fillRect(xFlatten, yFlatten, widthFlatten, heightFlatten);
         ctx.fillStyle = 'white';
-        ctx.font = "10px serif";
-        ctx.fillText("FLATTEN LAYER (21632)", canvas.width / 2 - xFlatten - 25, yFlatten + 12)
+        ctx.font = "30px serif";
+        ctx.fillText("FLATTEN LAYER (21632)", canvas.width / 2 - xFlatten * 6.5, canvas.height / 1.85)
+
+
+        //Draw Activation Layer2 (ReLU)
+        const widthReLU2 = 450
+        const heightReLU2 = 80
+        const xReLU2 = canvas.width / 2 - widthReLU / 2
+        const yReLU2 = spaceBetweenLayers + heightFlatten + yFlatten
+
+        ctx.beginPath();
+        ctx.moveTo(xConv2D + widthConv2D / 2, yConv2D + heightReLU2);
+        ctx.lineTo(xReLU2 + widthReLU2 / 2, yReLU2);
+        ctx.stroke();
+        ctx.fillStyle = 'black';
+        ctx.fillRect(xReLU2, yReLU2, widthReLU2, heightReLU2);
+        ctx.fillStyle = 'white';
+        ctx.font = "30px serif";
+        ctx.fillText("Activation Layer 2 ReLU (10)", canvas.width / 2 - 185, yReLU2 + 50)
 
 
         //Draw OutPut Layer
-        const spaceBetweenNodes = 20
-        const radius = 8;
+        const spaceBetweenNodes = 70
+        const radius = 40;
         const outPutNodes = 10
-        let x = 25
+        let x = 65
         for (let i = 0; i < outPutNodes; i++) {
             ctx.beginPath();
             ctx.arc(x, bottom - radius * 2, radius, 0, 2 * Math.PI);
             if (i == pred) {
+                ctx.lineWidth = 10
                 ctx.fillStyle = 'blue';
                 ctx.strokeStyle = 'blue';
             } else {
+                ctx.lineWidth = 1
                 ctx.fillStyle = 'white';
                 ctx.strokeStyle = 'black';
             }
             ctx.fill();
-            ctx.lineWidth = 1;
-            ctx.moveTo(widthFlatten / 2 + xFlatten, yFlatten + heightFlatten);
+            ctx.moveTo(widthReLU2 / 2 + xReLU2, yReLU2 + heightReLU2);
             ctx.lineTo(x, bottom - radius * 2 - radius);
             ctx.stroke();
             ctx.fillStyle = 'black';
-            ctx.font = '10px serif';
-            ctx.fillText(i, x - 2, bottom - radius - 5)
+            ctx.font = '30px serif';
+            ctx.fillText(i, x - 8, bottom - radius - 30)
             x = x + spaceBetweenNodes + radius
         }
 
