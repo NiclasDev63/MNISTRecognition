@@ -6,7 +6,7 @@ The typography of the CNN is visualized as well.
 The typography of the CNN looks like this:
   1. input layer (28, 28, 1)
   2. Conv2D Layer (26, 26, 32)
-  3. activation layer ReLU (26, 26, 32)
+  3. Activation layer ReLU (26, 26, 32)
   4. Flatten Layer (21,632)
   5. Activation Layer Softmax (10)
 
